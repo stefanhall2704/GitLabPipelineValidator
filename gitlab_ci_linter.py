@@ -76,7 +76,7 @@ def resolve_includes(yaml_data, base_path, all_files, resolved_files=None):
     Resolve and merge 'include' entries in the GitLab CI configuration.
     """
     if resolved_files is None:
-        resolved_files = set()  # To avoid re-processing the same files
+        resolved_files = set()
 
     merged_data = yaml_data.copy()
 
@@ -187,19 +187,6 @@ def collect_all_jobs(ci_files):
         yaml_data, _ = load_yaml(file_path)
         all_jobs.update(key for key in yaml_data.keys() if key not in ["stages", "variables", "image", "default"])
     return all_jobs
-
-def validate_caching(data, file_path):
-    """
-    Validate caching for efficiency in jobs.
-    """
-    warnings = []
-    for job_name, job_config in data.items():
-        if not isinstance(job_config, dict):
-            continue
-
-        if "cache" not in job_config:
-            warnings.append(f"File '{file_path}': Job '{job_name}' does not utilize caching. Consider adding a cache for efficiency.")
-    return warnings
 
 if __name__ == "__main__":
     # Default to current directory if no path is provided

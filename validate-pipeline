@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Path to the linter script and schema
+LINTER_SCRIPT="/usr/local/lib/validate-pipeline-lib/gitlab_ci_linter.py"
+SCHEMA_FILE="/usr/local/lib/validate-pipeline-lib/schema.json"
+
+# Ensure Python is available
+if ! command -v python3 &> /dev/null; then
+    echo "Python3 is required but not installed. Exiting."
+    exit 1
+fi
+
+# Ensure the linter script exists
+if [[ ! -f "$LINTER_SCRIPT" ]]; then
+    echo "Linter script not found at $LINTER_SCRIPT. Exiting."
+    exit 1
+fi
+
+# Run the linter
+python3 "$LINTER_SCRIPT" "$PWD" "$SCHEMA_FILE"

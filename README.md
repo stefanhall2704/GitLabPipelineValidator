@@ -26,6 +26,30 @@ Install the dependencies using:
 pip install pyyaml jsonschema
 ```
 
+## Installation
+
+### Quick Installation for Linux OS
+
+You can install the GitLab CI Linter using the following one-liner command:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/stefanhall2704/GitLabPipelineValidator/refs/heads/main/installer.sh | sudo bash
+```
+
+This command will:
+- Install the linter script (`gitlab_ci_linter.py`) and schema (`schema.json`) to `/usr/local/lib/validate-pipeline-lib/`.
+- Install the `validate-pipeline` executable script to `/usr/local/bin/`.
+
+### Verify Installation
+
+Run the following command to validate installation:
+
+```bash
+validate-pipeline
+```
+
+This will execute the linter in the current directory.
+
 ## Usage
 
 ### Command-Line Usage
@@ -136,8 +160,4 @@ lint:
 ## Contributing
 
 Feel free to contribute to this project by submitting issues or pull requests. For major changes, please open an issue first to discuss your ideas.
-
-## License
-
-This project is licensed under the MIT License.
 

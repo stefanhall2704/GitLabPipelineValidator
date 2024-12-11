@@ -65,44 +65,8 @@ python linter.py [DIRECTORY] [SCHEMA_PATH]
 - **DIRECTORY**: The directory containing `.gitlab-ci.yml` files. Defaults to the current working directory.
 - **SCHEMA_PATH**: Path to the JSON schema file. Defaults to `schema.json` in the current directory.
 
-### Automated Validation Script
 
-To simplify validation, create an executable script for automated usage:
-
-1. Save the following script as `/usr/local/bin/validate-pipeline`:
-
-```bash
-#!/bin/bash
-
-# Path to the linter script and schema
-LINTER_SCRIPT="/usr/local/lib/validate-pipeline-lib/gitlab_ci_linter.py"
-SCHEMA_FILE="/usr/local/lib/validate-pipeline-lib/schema.json"
-
-# Ensure Python is available
-if ! command -v python3 &> /dev/null; then
-    echo "Python3 is required but not installed. Exiting."
-    exit 1
-fi
-
-# Ensure the linter script exists
-if [[ ! -f "$LINTER_SCRIPT" ]]; then
-    echo "Linter script not found at $LINTER_SCRIPT. Exiting."
-    exit 1
-fi
-
-# Run the linter
-python3 "$LINTER_SCRIPT" "$PWD" "$SCHEMA_FILE"
-```
-
-2. Make the script executable:
-
-```bash
-chmod +x /usr/local/bin/validate-pipeline
-```
-
-3. Store the linter script and schema file in `/usr/local/lib/validate-pipeline-lib/`.
-
-4. Run the validator from any directory:
+1. Run the validator from any directory with a gitlab pipeline in it:
 
 ```bash
 validate-pipeline

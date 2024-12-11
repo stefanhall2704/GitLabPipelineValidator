@@ -17,107 +17,6 @@ mkdir -p "$BIN_DIR"
 
 # Embed files
 read -r -d '' GITLAB_CI_LINTER << 'EOF'
-{
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "object",
-  "properties": {
-    "image": { "type": "string" },
-    "default": {
-      "type": "object",
-      "properties": {
-        "tags": {
-          "type": "array",
-          "items": { "type": "string" }
-        }
-      },
-      "additionalProperties": true
-    },
-    "stages": {
-      "type": "array",
-      "items": { "type": "string" }
-    },
-    "variables": {
-      "type": "object",
-      "additionalProperties": { "type": ["string", "number", "boolean"] }
-    },
-    "include": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "local": { "type": "string" },
-              "remote": { "type": "string" },
-              "template": { "type": "string" }
-            },
-            "additionalProperties": false
-          }
-        },
-        {
-          "type": "object",
-          "properties": {
-            "local": { "type": "string" },
-            "remote": { "type": "string" },
-            "template": { "type": "string" }
-          },
-          "additionalProperties": false
-        }
-      ]
-    }
-  },
-  "patternProperties": {
-    "^(?!variables$|image$|default$|stages$|include$).*": {
-      "type": "object",
-      "properties": {
-        "stage": { "type": "string" },
-        "needs": {
-          "type": "array",
-          "items": {
-            "oneOf": [
-              { "type": "string" },
-              {
-                "type": "object",
-                "properties": {
-                  "job": { "type": "string" },
-                  "artifacts": { "type": "boolean" }
-                },
-                "required": ["job"],
-                "additionalProperties": false
-              }
-            ]
-          }
-        },
-        "dependencies": {
-          "type": "array",
-          "items": { "type": "string" }
-        },
-        "script": {
-          "type": "array",
-          "items": { "type": "string" }
-        },
-        "artifacts": {
-          "type": "object",
-          "properties": {
-            "paths": {
-              "type": "array",
-              "items": { "type": "string" }
-            },
-            "when": { "type": "string" },
-            "expire_in": { "type": "string" }
-          },
-          "additionalProperties": true
-        }
-      },
-      "required": ["stage"],
-      "additionalProperties": true
-    }
-  },
-  "additionalProperties": false
-}
-EOF
-
-read -r -d '' SCHEMA_JSON << 'EOF'
 import os
 import yaml
 import json
@@ -346,8 +245,107 @@ if __name__ == "__main__":
     # Validate each file
     for ci_file in ci_files:
         validate_file(ci_file, schema_path, all_defined_jobs, ci_files, main_stages)
+EOF
 
-
+read -r -d '' SCHEMA_JSON << 'EOF'
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "image": { "type": "string" },
+    "default": {
+      "type": "object",
+      "properties": {
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": true
+    },
+    "stages": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "variables": {
+      "type": "object",
+      "additionalProperties": { "type": ["string", "number", "boolean"] }
+    },
+    "include": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "local": { "type": "string" },
+              "remote": { "type": "string" },
+              "template": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        },
+        {
+          "type": "object",
+          "properties": {
+            "local": { "type": "string" },
+            "remote": { "type": "string" },
+            "template": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "patternProperties": {
+    "^(?!variables$|image$|default$|stages$|include$).*": {
+      "type": "object",
+      "properties": {
+        "stage": { "type": "string" },
+        "needs": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              { "type": "string" },
+              {
+                "type": "object",
+                "properties": {
+                  "job": { "type": "string" },
+                  "artifacts": { "type": "boolean" }
+                },
+                "required": ["job"],
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "dependencies": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "script": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "artifacts": {
+          "type": "object",
+          "properties": {
+            "paths": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "when": { "type": "string" },
+            "expire_in": { "type": "string" }
+          },
+          "additionalProperties": true
+        }
+      },
+      "required": ["stage"],
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}
 EOF
 
 read -r -d '' VALIDATE_PIPELINE_SCRIPT << 'EOF'

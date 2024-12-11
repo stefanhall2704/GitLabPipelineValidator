@@ -33,7 +33,7 @@ pip install pyyaml jsonschema
 You can install the GitLab CI Linter using the following one-liner command:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/stefanhall2704/GitLabPipelineValidator/refs/heads/main/installer.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/stefanhall2704/GitLabPipelineValidator/refs/heads/main/install.sh | sudo bash
 ```
 
 This command will:
